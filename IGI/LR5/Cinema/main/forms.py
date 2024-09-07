@@ -27,11 +27,7 @@ class CustomUserCreationForm(UserCreationForm):
             raise ValidationError('You must be at least 18 years old to register.')
         return dob
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.save()
-        Client.objects.create(user=user)
-
+    def save_contact(self, user):
         contact.objects.create(
             user=user,
             phone=self.cleaned_data['phone'],
@@ -39,6 +35,11 @@ class CustomUserCreationForm(UserCreationForm):
             date_of_birth=self.cleaned_data['date_of_birth'],
         )
 
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.save()
+        Client.objects.create(user=user)
+        self.save_contact(user)
         return user
 
 
@@ -50,7 +51,7 @@ class EmployeeCreationForm(CustomUserCreationForm):
         fields = CustomUserCreationForm.Meta.fields + ('job_description', 'photo')
 
     def save(self, commit=True):
-        user = super().save(commit=False)
+        user = super(UserCreationForm, self).save(commit=False)
         user.save()
 
         Employee.objects.create(
@@ -58,7 +59,7 @@ class EmployeeCreationForm(CustomUserCreationForm):
             job_description=self.cleaned_data['job_description'],
             photo=self.cleaned_data['photo'],
         )
-
+        self.save_contact(user)
         return user
 
 
