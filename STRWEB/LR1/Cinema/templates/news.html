@@ -2,9 +2,18 @@
 {% block title %}Новости{% endblock title %}
 {% block header %}Новости{% endblock header %}
 {% block content %}
-{% for i in all_items %} 
-<h3>{{ i.title }}</h3>
-<img src="{{ i.image.url }}" alt="" style="height:300px;">
-<p>{{ i.content }}</p>
-{% endfor %}
+    <main>
+        <section class="news-list">
+            {% for i in all_items %}
+                <section class="news-item">
+                    <h3>{{ i.title }}</h3>
+                    <img src="{{ i.image.url }}" alt="{{ i.title }}" style="height:300px; width:auto;">
+                    <p>{{ i.content|truncatewords:20 }}</p>
+                    <button name="Read more" type="button" 
+                            onclick="location.href='{% url 'news_details' i.id %}'" 
+                            style="text-align: center">Читать далее</button>
+                </section>
+            {% endfor %}
+        </section>
+    </main>
 {% endblock content %}

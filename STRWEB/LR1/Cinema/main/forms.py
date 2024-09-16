@@ -64,12 +64,16 @@ class EmployeeCreationForm(CustomUserCreationForm):
 
 
 class ReviewForm(ModelForm):
+    RATING_CHOICES = [(i, str(i)) for i in range(1, 11)]
+
+    rating = forms.ChoiceField(choices=RATING_CHOICES, widget=forms.Select)
+
     class Meta:
         model = review
         fields = ['name', 'rating', 'text']
 
     def clean_rating(self):
         rating = self.cleaned_data.get('rating')
-        if rating < 1 or rating > 5:
+        if int(rating) < 1 or int(rating) > 5:
             raise ValidationError('Оценка должна быть в диапазоне от 1 до 5.')
         return rating

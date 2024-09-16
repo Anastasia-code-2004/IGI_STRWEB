@@ -1,10 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Ворос-ответ{% endblock title %}
-{% block header %}Ворос-ответ{% endblock header %}
+{% block title %}Вопрос-ответ{% endblock title %}
+{% block header %}Вопрос-ответ{% endblock header %}
 {% block content %}
-{% for i in all_items %}
-    <h3>{{ i.answer }}</h3>
-    <p>{{ i.question }}</p>
-    <p>{{ i.date_question }}</p>
-{% endfor %}
+<main>
+    <section>
+        {% for i in all_items %}
+            <article>
+                <details>
+                    <summary>{{ i.question }}</summary>
+                    <p>{{ i.answer }}</p>
+                    <p><small>Добавлено: {{ i.date_question }}</small></p>
+                </details>
+            </article>
+        {% endfor %}
+    </section>
+</main>
 {% endblock content %}

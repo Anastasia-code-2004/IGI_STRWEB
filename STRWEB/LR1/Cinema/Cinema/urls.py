@@ -23,7 +23,7 @@ from Cinema import settings
 from main.views import *
 from main.views import SignUp
 from movies_tickets import views
-from movies_tickets.views import scheduleView, bookingView
+from movies_tickets.views import scheduleView, bookingView, paymentView
 from movies.views import moviesView, movieDetailsView
 from django.urls import re_path
 
@@ -60,7 +60,18 @@ urlpatterns = [
     re_path(r'^stats$', stats, name='stats'),
     re_path(r'^clients_and_purchases$', clients_and_purchases, name='clients_and_purchases'),
     re_path(r'^movies_and_sales$', movies_and_sales, name='movies_and_sales'),
+    re_path(r'^code/$', codeView, name='code'),
+    re_path(r'^news/(?P<id>\d+)/$', news_detailsView, name='news_details'),
+    re_path(r'^cart/$', cartView, name='cart'),
+    re_path(r'^booking/(?P<showtime_id>\d+)/add_to_cart/$', views.add_to_cart, name='add_to_cart'),
+    re_path(r'^cart/update_cartitem_quantity/(?P<cartitem_id>\d+)/$', views.update_cartitem_quantity, name='update_cartitem_quantity'),
+    re_path(r'^cart/delete_cartitem/(?P<cartitem_id>\d+)/$', views.remove_from_cart, name='remove_from_cart'),
+    re_path(r'^cart/checkout/(?P<cartitem_id>\d+)/$', views.checkout_cartitem, name='checkout_cartitem'),
+    re_path(r'^cart/payment/(?P<cartitem_id>\d+)/$', paymentView, name='payment'),
+    re_path(r'^pay/(?P<cartitem_id>\d+)/$', views.pay, name='pay'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

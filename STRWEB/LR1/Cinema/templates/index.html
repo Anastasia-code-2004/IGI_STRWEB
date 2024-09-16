@@ -5,8 +5,25 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>Календарь</h1>
-    <p>Сегодня: {{ d }}</p>
-    <p>{{ html_out|safe }}</p>
-    <h4>Текущее: {{date|date:"d/m/Y"}} ({{timezone}})</h4>
+    <main>
+        <h1>Календарь</h1>
+        <section>
+            <p>Сегодня: {{ d }}</p>
+            <p>{{ html_out|safe }}</p>
+        </section>
+        <h4>Текущее: <a rel="nofollow" href="https://time-in.ru/time/minsk" target="_blank" 
+                        title="Перейти на сайт time-in.ru">
+            {{date|date:"d/m/Y"}} ({{timezone}})</a></h4>
+        <p><small>А тут для вас <a href="https://drive.google.com/uc?export=download&id=1ESCQ--Qo7ero8xFwXb4IQBdVeVAziwrr" 
+                                   download>сюрприз</a>...</small></p>
+        <video width="360" height="240" 
+               src="/media/serials.mp4"
+               controls preload="auto">
+            Video cannot be displayed
+        </video>
+        <audio src="/media/Harry_Styles-Cinema.mp3"
+               controls preload="none">
+            Audio cannot be displayed
+        </audio>
+    </main>
 {% endblock content %}

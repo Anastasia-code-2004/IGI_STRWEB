@@ -2,8 +2,14 @@
 {% block title %}Вакансии{% endblock title %}
 {% block header %}Вакансии{% endblock header %}
 {% block content %}
-{% for i in all_items %} 
-    <h3>{{ i.title }}</h3>
-    <p>{{ i.description }}</p>
-{% endfor %}
+    <main>
+        <section>
+            {% for i in all_items %} 
+                <section>
+                    <h3>{{ i.title }}</h3>
+                    <p>{{ i.description }}</p>
+                </section>
+            {% endfor %}
+        </section>
+    </main>
 {% endblock content %}

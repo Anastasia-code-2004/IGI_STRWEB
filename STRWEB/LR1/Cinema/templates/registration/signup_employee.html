@@ -5,13 +5,21 @@
     <title>Сотрудник</title>
 </head>
 <body>
-    <h2>Регистрация сотрудника</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Зарегистрироваться">
-    </form>
-    <a href="{% url 'login' %}">Ко входу</a>
-    <a href="{% url 'home' %}">На главную</a>
+    <header>
+        <h2>Регистрация сотрудника</h2>
+    </header>
+    <main>
+        <section>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Зарегист��ироваться">
+            </form>
+        </section>
+        <nav>
+            <a href="{% url 'login' %}">Ко входу</a>
+            <a href="{% url 'home' %}">На главную</a>
+        </nav>
+    </main>
 </body>
 </html>

@@ -2,15 +2,22 @@
 {% block title %}Отзывы{% endblock title %}
 {% block header %}Отзывы{% endblock header %}
 {% block content %}
-<form method="post" action="{% url 'add_review' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Отправить отзыв</button>
-</form>
-{% for i in all_items %}
-    <h3>{{ i.name }}</h3>
-    <p>{{ i.rating }}</p>
-    <p>{{ i.text }}</p>
-    <p>{{ i.date }}</p>
-{% endfor %}
+    <main>
+        <form method="post" action="{% url 'add_review' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Отправить отзыв</button>
+        </form>
+        <section>
+            {% for i in all_items %}
+                <section>
+                    <h3>{{ i.name }}</h3>
+                    <h2>{{ i.client.user.username }}</h2>
+                    <p>{{ i.rating }}</p>
+                    <p>{{ i.text }}</p>
+                    <p>{{ i.date }}</p>
+                </section>
+            {% endfor %}
+        </section>
+    </main>
 {% endblock content %}

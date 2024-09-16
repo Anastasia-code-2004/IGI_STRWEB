@@ -38,3 +38,6 @@ admin.site.register(about_company)
 admin.site.register(contact)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(Client)
+admin.site.register(history_of_company)
+admin.site.register(company_partner)
+

@@ -1,30 +1,41 @@
 {% extends "base.html" %}
 {% block title %}Расписание сеансов{% endblock title %}
+{% block header %}Расписание сеансов{% endblock header %}
 {% block content %}
-    <h1>Расписание сеансов</h1>
-    <form method="get">
-        <select name="genre" onchange="this.form.submit()">
-            <option value="">--Выберите жанр--</option>
-            {% for genre in all_genres %}
-                <option value="{{ genre.name }}" {% if genre.name == request.GET.genre %}selected{% endif %}>{{ genre.name }}</option>
-            {% endfor %}
-        </select>
-        <input type="date" name="date" value="{{ request.GET.date }}" onchange="this.form.submit()">
-        <input type="number" name="price" value="{{ request.GET.price }}" placeholder="Цена" onchange="this.form.submit()">
-        <input type="text" name="movie" value="{{ request.GET.movie }}" placeholder="Название фильма" onchange="this.form.submit()">
-    </form>
+<main>
+    <section>
+        <form method="get">
+            <select name="genre" onchange="this.form.submit()">
+                <option value="">--Выберите жанр--</option>
+                {% for genre in all_genres %}
+                    <option value="{{ genre.name }}" 
+                            {% if genre.name == request.GET.genre %}selected{% endif %}>
+                            {{ genre.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="date" name="date" value="{{ request.GET.date }}" 
+                   onchange="this.form.submit()">
+            <input type="number" name="price" value="{{ request.GET.price }}" 
+                   placeholder="Цена" onchange="this.form.submit()">
+            <input type="text" name="movie" value="{{ request.GET.movie }}" 
+                   placeholder="Название фильма" onchange="this.form.submit()">
+        </form>
+    </section>
     {% for schedule in all_schedules %}
-        <div>
-            <h2>Расписание на {{ schedule.date }}</h2>
-            {% for showtime in schedule.showtimes.all %}
-                {% if showtime in all_showtimes %}
+    <section>
+        <h2>Расписание на {{ schedule.date }}</h2>
+        {% for showtime in schedule.showtimes.all %}
+            {% if showtime in all_showtimes %}
+                <article>
                     <img src="{{ showtime.movie.poster.url }}" alt="" style="height:300px;">
                     <p><a href="{% url 'booking' showtime.id %}">Фильм: {{ showtime.movie.title }}</a></p>
                     <p>Время начала: {{ showtime.start_time.time }}</p>
                     <p>Зал: {{ showtime.hall.name }}</p>
                     <p>Доступные места: {{ showtime.available_seats }}</p>
-                {% endif %}
-            {% endfor %}
-        </div>
+                </article>
+            {% endif %}
+        {% endfor %}
+    </section>
     {% endfor %}
+</main>
 {% endblock content %}

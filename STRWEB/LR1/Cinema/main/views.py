@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import os
 from translate import Translator
 from movies.models import Movie, Genre
-from movies_tickets.models import Ticket, Showtime
+from movies_tickets.models import Ticket, Showtime, CartItem
 from .forms import CustomUserCreationForm, EmployeeCreationForm, ReviewForm
 from main.models import *
 import requests
@@ -39,25 +39,21 @@ def get_quote():
 def homeView(request):
     latest_news = news_item.objects.latest('id')
     quote = get_quote()
-    return render(request, 'home.html', {'latest_news': latest_news, 'quote': quote})
+    all_partners = company_partner.objects.all()
+    return render(request, 'home.html', {'latest_news': latest_news, 'quote': quote,
+                                         'partners': all_partners})
 
 
 def aboutView(request):
     all_about_company = about_company.objects.all()
-    return render(request, 'about_company.html',
-                  {'all_items': all_about_company})
+    history_of_items = history_of_company.objects.order_by('data')
 
+    context = {
+        'all_about': all_about_company,
+        'history_items': history_of_items
+    }
 
-def vacanciesView(request):
-    return render(request, 'vacancies.html')
-
-
-def reviewsView(request):
-    return render(request, 'reviews.html')
-
-
-def promo_couponsView(request):
-    return render(request, 'promo_coupons.html')
+    return render(request, 'about_company.html', context)
 
 
 def contactView(request):
@@ -68,10 +64,6 @@ def faqView(request):
     all_faq = faq.objects.all()
     return render(request, 'faq.html',
                   {'all_items': all_faq})
-
-
-def about_companyView(request):
-    return render(request, 'about_company.html')
 
 
 def contactsView(request):
@@ -131,8 +123,8 @@ class AddReview(LoginRequiredMixin, CreateView):
     template_name = 'add_review.html'
     success_url = '/reviews/'
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
+    def form_valid(self, form): # Отвечает за обработку формы
+        form.instance.client = Client.objects.get(user=self.request.user)
         return super().form_valid(form)
 
 
@@ -141,10 +133,10 @@ def profile(request):
         return render(request, 'profile.html')
     elif not request.user.is_staff and not request.user.is_superuser:
         client = get_object_or_404(Client, user=request.user)
-        tickets = Ticket.objects.filter(user=client)
+        tickets = Ticket.objects.filter(user=client).order_by('-purchase_time')
         return render(request, 'client_profile.html', {'tickets': tickets})
     elif request.user.is_staff or request.user.is_superuser:
-        tickets = Ticket.objects.all()
+        tickets = Ticket.objects.all().order_by('-purchase_time')
         movies = Movie.objects.all()
         showtimes = Showtime.objects.all()
         movie_title = request.GET.get('movie')
@@ -287,7 +279,7 @@ def clients_and_purchases(request):
 
 
 def get_sales_by_movie():
-    sales_by_movie = Ticket.objects.values('showtime__movie__title').annotate(
+    sales_by_movie = Ticket.objects.all().values('showtime__movie__title').annotate(
         total_sales=Sum('price')).order_by('-total_sales')
     return sales_by_movie
 
@@ -299,14 +291,13 @@ def sales_distribution_chart():
 
     plt.figure(figsize=(8, 6))
     plt.pie(total_sales, labels=movies, autopct='%1.1f%%')
-    plt.title('Распределение продаж по фильмам')
     plt.axis('equal')
     save_path = os.path.join(settings.MEDIA_ROOT, 'sales_distribution_chart.png')
     plt.savefig(save_path)
 
 
 def movies_and_sales(request):
-    sales_data = Ticket.objects.values('showtime__movie__title').annotate(total=Sum('price'))
+    sales_data = Ticket.objects.all().values('showtime__movie__title').annotate(total=Sum('price'))
     movies_and_sales = []
     for data in sales_data:
         total_sales = data['total'] or 0
@@ -317,3 +308,16 @@ def movies_and_sales(request):
     return render(request, 'movies_and_sales.html', {'movies_and_sales': movies_and_sales,
                                                      'image_path': image_path})
 
+def codeView(request):
+    return render(request, 'code.html')
+
+
+def news_detailsView(request, id):
+    news = get_object_or_404(news_item, id=id)
+    return render(request, 'news_details.html', {'news': news})
+
+
+def cartView(request):
+    client = get_object_or_404(Client, user=request.user)
+    cartitems = CartItem.objects.filter(client=client)
+    return render(request, 'cart.html', {'cartitems': cartitems})

@@ -44,6 +44,21 @@ class Schedule(models.Model):
         verbose_name_plural = 'Расписания'
 
 
+class CartItem(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, default=None)
+    showtime = models.ForeignKey(Showtime, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)], null=False,
+                                blank=False)
+
+    def __str__(self):
+        return f'Билет(-ы) в корзине клиента {self.client.user.username}'
+
+    class Meta:
+        verbose_name = 'Билет в корзине'
+        verbose_name_plural = 'Билеты в корзине'
+
+
 class Ticket(models.Model):
     showtime = models.ForeignKey(Showtime, on_delete=models.CASCADE)
     user = models.ForeignKey(Client, on_delete=models.CASCADE)
@@ -58,3 +73,6 @@ class Ticket(models.Model):
     class Meta:
         verbose_name = 'Билет'
         verbose_name_plural = 'Билеты'
+
+
+

@@ -3,24 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Регистрация</title>
-    <style>
-        .top-right {
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
-    </style>
 </head>
 <body>
-    <h2>Регистрация</h2>
-    <a class="top-right" href="{% url 'signup_employee' %}">Для сотрудников</a>
-    <form method="post">
-        {% csrf_token %}
-        {{form}}
-        <input type="submit" value="Зарегистрироваться">
-    </form>
-    
-    <a href="{% url 'login' %}">Ко входу</a>
-    <a href="{% url 'home' %}">На главную</a>
+    <header>
+        <h2>Регистрация</h2>
+        <nav>
+            <a style="position: absolute; right: 0; top: 0" href="{% url 'signup_employee' %}">Для сотрудников</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                {{form}}
+                <input type="submit" value="Зарегистрироваться">
+            </form>
+        </section>
+        <section>
+            <button name="To login" type="button" onclick="location.href='{% url 'login' %}'">
+                Ко входу</button>
+            <button name="To home" type="button" 
+                                onclick="location.href='{% url 'home' %}'">
+                На главную</button>
+        </section>
+    </main>
 </body>
 </html>

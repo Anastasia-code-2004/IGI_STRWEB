@@ -2,9 +2,18 @@
 {% block title %}Промокоды и купоны{% endblock title %}
 {% block header %}Промокоды и купоны{% endblock header %}
 {% block content %}
-{% for i in all_items %}
-<p>Код: {{ i.code }}</p>
-<p>Скидка: {{ i.discount_in_percents }} %</p>
-<p>{% if i.is_active %}Активен{% else %}Не активен{% endif %}</p>
-{% endfor %}
+<main>
+    <section>
+        {% for i in all_items %}
+        <figure>
+            <figcaption>Промокод: {{ i.code }}</figcaption>
+            <p>Скидка: {{ i.discount_in_percents }} %</p>
+            <p style="color: {% if i.is_active %}green{% else %}red{% endif %};">
+                {% if i.is_active %}Активен{% else %}Не активен{% endif %}
+            </p>
+            <hr size="3">
+        </figure>
+        {% endfor %}
+    </section>
+</main>
 {% endblock content %}

@@ -2,13 +2,19 @@
 {% block title %}Контакты{% endblock title %}
 {% block header %}Контакты{% endblock header %}
 {% block content %}
-{% for employee in employees %}
-    <div>
-          <img src="{{ employee.photo.url }}" alt="" style="height:200px;">
-          <h3>{{ employee.user.username }}</h3>
-          <p>{{ employee.job_description }}</p>
-          <p>Телефон: {{ employee.user.contact.phone }}</p>
-          <p>Email: {{ employee.user.contact.email }}</p>
-    </div>
-    {% endfor %}
+    <main>
+        <section>
+            {% for employee in employees %}
+                <section>
+                      <img src="{{ employee.photo.url }}" 
+                           alt="Cотрудник {{ employee.user.username }}" style="height:200px;" 
+                           title="{{ employee.user.username }}">
+                      <h3>{{ employee.user.username }}</h3>
+                      <p>{{ employee.job_description }}</p>
+                      <p>Телефон: {{ employee.user.contact.phone }}</p>
+                      <p>Email: {{ employee.user.contact.email }}</p>
+                </section>
+            {% endfor %}
+        </section>
+    </main>
 {% endblock content %}
