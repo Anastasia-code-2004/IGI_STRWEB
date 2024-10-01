@@ -20,6 +20,18 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         fields = UserCreationForm.Meta.fields + ('email', 'phone', 'date_of_birth')
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if Client.objects.filter(user__email=email).exists():
+            raise ValidationError("A user with this email already exists.")
+        return email
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if contact.objects.filter(phone=phone).exists():
+            raise ValidationError("A user with this phone number already exists.")
+        return phone
+
     def clean_date_of_birth(self):
         dob = self.cleaned_data['date_of_birth']
         today = date.today()

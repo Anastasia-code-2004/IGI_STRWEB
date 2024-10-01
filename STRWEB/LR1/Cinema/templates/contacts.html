@@ -4,6 +4,7 @@
 {% block content %}
     <main>
         <section>
+            <h2>Сотрудники</h2> <!-- Добавлен заголовок для внешней секции -->
             {% for employee in employees %}
                 <section>
                       <img src="{{ employee.photo.url }}" 

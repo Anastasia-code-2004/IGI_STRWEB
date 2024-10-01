@@ -128,6 +128,7 @@ class AddReview(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@login_required
 def profile(request):
     if not request.user.is_authenticated:
         return render(request, 'profile.html')

@@ -21,7 +21,7 @@
         <div>
             <h2>Наиболее прибыльный фильм</h2>
             <p>{{ profitable_movie.showtime__movie__title }}</p>
-            <p>Общая прибыль: {{ profitable_movie.total_profit }}</p>
+            <p>Общая прибыль: {{ profitable_movie.total_profit|floatformat:2 }}</p>
         </div>
     </section>
 
