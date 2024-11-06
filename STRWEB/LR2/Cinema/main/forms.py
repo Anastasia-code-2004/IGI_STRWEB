@@ -78,7 +78,17 @@ class EmployeeCreationForm(CustomUserCreationForm):
 class ReviewForm(ModelForm):
     RATING_CHOICES = [(i, str(i)) for i in range(1, 11)]
 
-    rating = forms.ChoiceField(choices=RATING_CHOICES, widget=forms.Select)
+    # Добавляем CSS-класс form-input для каждого поля через атрибут widget
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Тема отзыва'})
+    )
+    rating = forms.ChoiceField(
+        choices=RATING_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-input'})
+    )
+    text = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-input', 'placeholder': 'Ваш отзыв'})
+    )
 
     class Meta:
         model = review

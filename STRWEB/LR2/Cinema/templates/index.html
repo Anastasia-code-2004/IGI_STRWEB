@@ -1,29 +1,58 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Страница индекса
+    Индекс
 {% endblock title %}
 
 {% block content %}
-    <main>
-        <h1>Календарь</h1>
-        <section>
-            <p>Сегодня: {{ d }}</p>
-            <p>{{ html_out|safe }}</p>
+    <main class="main-content">
+        {% include "preloader.html" %}
+
+        <!-- Заголовок Календарь -->
+        <section class="calendar-section">
+            <h1 class="calendar-title">Календарь</h1>
+            <p class="today">Сегодня: {{ d }}</p>
+            <div class="calendar-output">{{ html_out|safe }}</div>
         </section>
-        <h4>Текущее: <a rel="nofollow" href="https://time-in.ru/time/minsk" target="_blank" 
-                        title="Перейти на сайт time-in.ru">
-            {{date|date:"d/m/Y"}} ({{timezone}})</a></h4>
-        <p><small>А тут для вас <a href="https://drive.google.com/uc?export=download&id=1ESCQ--Qo7ero8xFwXb4IQBdVeVAziwrr" 
-                                   download>сюрприз</a>...</small></p>
-        <video width="360" height="240" 
-               src="/media/serials.mp4"
-               controls preload="auto">
-            Video cannot be displayed
-        </video>
-        <audio src="/media/Harry_Styles-Cinema.mp3"
-               controls preload="none">
-            Audio cannot be displayed
-        </audio>
+
+        <!-- Текущая дата -->
+        <section class="date-section">
+            <h4 class="current-date">
+                Текущее: 
+                <a rel="nofollow" href="https://time-in.ru/time/minsk" target="_blank" title="Перейти на сайт time-in.ru">
+                {{date|date:"d/m/Y"}} ({{timezone}})</a>
+            </h4>
+        </section>
+
+        <!-- Сюрприз -->
+        <section class="surprise-section">
+            <p class="surprise-text">
+                <small>А тут для вас 
+                    <a href="https://drive.google.com/uc?export=download&id=1ESCQ--Qo7ero8xFwXb4IQBdVeVAziwrr" download>
+                    сюрприз</a>...
+                </small>
+            </p>
+        </section>
+
+        <!-- Медиа-блок -->
+        <section class="media-container">
+            <div class="media-block">
+                <video width="360" height="240" src="/media/serials.mp4" controls preload="auto" class="media-video">
+                    Видео не может быть отображено
+                </video>
+            </div>
+            <div class="media-block">
+                <audio src="/media/Harry_Styles-Cinema.mp3" controls preload="none" class="media-audio">
+                    Аудио не может быть отображено
+                </audio>
+            </div>
+        </section>
+
+        <!-- Анимационный блок -->
+        <section class="animation-section">
+            <div class="animation-output">
+                {% include "cinema_animation.html" %}
+            </div>
+        </section>
     </main>
 {% endblock content %}

@@ -26,6 +26,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+
 def get_quote():
     url = 'https://favqs.com/api/qotd'
     response = requests.get(url)
@@ -272,11 +273,19 @@ def stats(request):
 def clients_and_purchases(request):
     clients = Client.objects.exclude(user__employee__isnull=False).order_by('user__username')
     clients_and_purchases = []
+    total_purchases_amount = 0  # Инициализируем переменную для общей суммы покупок
+
     for client in clients:
         total_purchases = Ticket.objects.filter(user=client).aggregate(total=Sum('price'))['total'] or 0
         total_purchases = round(total_purchases, 2)
         clients_and_purchases.append((client, total_purchases))
-    return render(request, 'clients_and_purchases.html', {'clients_and_purchases': clients_and_purchases})
+        total_purchases_amount += total_purchases  # Суммируем общую сумму покупок
+
+    # Передаем итоговую сумму в контекст
+    return render(request, 'clients_and_purchases.html', {
+        'clients_and_purchases': clients_and_purchases,
+        'total_purchases_amount': total_purchases_amount  # Передаём итоговую сумму
+    })
 
 
 def get_sales_by_movie():
@@ -298,16 +307,29 @@ def sales_distribution_chart():
 
 
 def movies_and_sales(request):
+    # Получаем данные о продажах
     sales_data = Ticket.objects.all().values('showtime__movie__title').annotate(total=Sum('price'))
+
     movies_and_sales = []
+    total_sales_amount = 0  # Инициализируем переменную для итоговой суммы
+
+    # Обрабатываем данные о продажах
     for data in sales_data:
         total_sales = data['total'] or 0
         total_sales = round(total_sales, 2)
         movies_and_sales.append((data['showtime__movie__title'], total_sales))
-    sales_distribution_chart()
+        total_sales_amount += total_sales  # Считаем общую сумму всех продаж
+
+    sales_distribution_chart()  # Генерируем график
     image_path = os.path.join(settings.MEDIA_URL, 'sales_distribution_chart.png')
-    return render(request, 'movies_and_sales.html', {'movies_and_sales': movies_and_sales,
-                                                     'image_path': image_path})
+
+    # Возвращаем данные в контексте, включая итоговую сумму
+    return render(request, 'movies_and_sales.html', {
+        'movies_and_sales': movies_and_sales,
+        'image_path': image_path,
+        'total_sales_amount': total_sales_amount  # Передаём итоговую сумму в контекст
+    })
+
 
 def codeView(request):
     return render(request, 'code.html')

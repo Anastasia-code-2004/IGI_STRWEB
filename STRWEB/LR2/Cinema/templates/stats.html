@@ -3,46 +3,73 @@
 {% block title %}
     Статистика
 {% endblock title %}
-{% block header %}
-    Статистика
-{% endblock header %}
 
 {% block content %}
-<main>
-    <section>
-        <div>
-            <h2>Наиболее популярный фильм</h2>
-            <p>{{ popular_movie.showtime__movie__title }}</p>
-            <p>Количество билетов: {{ popular_movie.ticket_count }}</p>
+<main class="statistics-page">
+    <section class="statistics-section">
+        <div class="stat-block">
+            <h2 class="stat-title">Наиболее популярный фильм</h2>
+            <p class="stat-text popular-movie">{{ popular_movie.showtime__movie__title }}</p>
+            <p class="stat-text">Количество билетов: {{ popular_movie.ticket_count }}</p>
         </div>
     </section>
 
-    <section>
-        <div>
-            <h2>Наиболее прибыльный фильм</h2>
-            <p>{{ profitable_movie.showtime__movie__title }}</p>
-            <p>Общая прибыль: {{ profitable_movie.total_profit|floatformat:2 }}</p>
+    <section class="statistics-section">
+        <div class="stat-block">
+            <h2 class="stat-title">Наиболее прибыльный фильм</h2>
+            <p class="stat-text profitable-movie">{{ profitable_movie.showtime__movie__title }}</p>
+            <p class="stat-text">Общая прибыль: {{ profitable_movie.total_profit|floatformat:2 }}</p>
         </div>
     </section>
 
-    <section>
-        <div>
-            <h2>Статистика возраста клиентов</h2>
-            <p>Средний возраст: {{ avg_age }}</p>
-            <p>Медианный возраст: {{ median_age }}</p>
+    <section class="statistics-section">
+        <div class="stat-block">
+            <h2 class="stat-title">Статистика возраста клиентов</h2>
+            <p class="stat-text">Средний возраст: {{ avg_age }}</p>
+            <p class="stat-text">Медианный возраст: {{ median_age }}</p>
         </div>
     </section>
     
-    <section>
-        <div>
-            <h2>Статистика продаж</h2>
-            <p>Средняя сумма продаж: {{ avg_sales }}</p>
-            <p>Мода суммы продаж: {{ mode_sales }}</p>
-            <p>Медиана суммы продаж: {{ median_sales }}</p>
+    <section class="statistics-section">
+        <div class="stat-block">
+            <h2 class="stat-title">Статистика продаж</h2>
+            <p class="stat-text">Средняя сумма продаж: {{ avg_sales }}</p>
+            <p class="stat-text">Мода суммы продаж: {{ mode_sales }}</p>
+            <p class="stat-text">Медиана суммы продаж: {{ median_sales }}</p>
         </div>
     </section>
-    
+
+    <!-- Новый блок с флажками и переключателями -->
+    <section class="statistics-section toggle-section">
+        <div class="stat-block">
+            <h2 class="stat-title">Настройки отображения статистики</h2>
+            <form>
+                <!-- Флажки -->
+                <label class="stat-checkbox">
+                    <input type="checkbox" checked> Показать детализированные данные
+                </label>
+                <label class="stat-checkbox">
+                    <input type="checkbox"> Включить скрытые фильмы
+                </label>
+
+                <!-- Переключатели -->
+                <div class="toggle-group">
+                    <label class="stat-toggle">
+                        <input type="radio" name="display-mode" checked> Основной режим
+                    </label>
+                    <label class="stat-toggle">
+                        <input type="radio" name="display-mode"> Режим аналитики
+                    </label>
+                </div>
+            </form>
+        </div>
+    </section>
+    <form>
+        <label for="age">Введите возраст (18-65):</label>
+        <input type="number" id="age" name="age" min="18" max="65">
+    </form>
+
     <hr size="3">
-    <a href="/code/" target="_self">Код сбора статистики</a>
+    <a class="stat-link" href="/code/" target="_self">Код сбора статистики</a>
 </main>
 {% endblock content %}

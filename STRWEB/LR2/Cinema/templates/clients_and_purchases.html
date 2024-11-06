@@ -1,17 +1,27 @@
 {% extends "base.html" %}
 {% block title %}Клиенты{% endblock title %}
-{% block header %}Клиенты и их покупки{% endblock header %}
 {% block content %}
-    <table align="center" bgcolor="#e9967a" border="1">
-        <tr>
-            <th>Клиент</th>
-            <th>Общая сумма покупок</th>
-        </tr>
-        {% for client, total_purchases in clients_and_purchases %}
-            <tr>
-                <td>{{ client.user.username }}</td>
-                <td>{{ total_purchases }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    <div class="table-container">
+        <table id="stats">
+        <caption>Клиенты и их покупки</caption>
+            <thead>
+                <tr>
+                    <th>Клиент</th>
+                    <th>Общая сумма покупок</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client, total_purchases in clients_and_purchases %}
+                    <tr>
+                        <td class="short-description">{{ client.user.username }}</td>
+                        <td class="short-description">{{ total_purchases }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th class="short-description"><strong>Итого:</strong></th>
+                    <th class="short-description"><strong>{{ total_purchases_amount }}</strong></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 {% endblock content %}

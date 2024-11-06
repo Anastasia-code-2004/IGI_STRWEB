@@ -1,16 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Вопрос-ответ{% endblock title %}
-{% block header %}Вопрос-ответ{% endblock header %}
 {% block content %}
-<main>
-    <section>
-        <h2>Часто задаваемые вопросы</h2> <!-- Добавлен заголовок для секции -->
+<main class="faq-page">
+    <section class="faq-section">
+        <h2 class="faq-title">Часто задаваемые вопросы</h2>
         {% for i in all_items %}
-            <article>
-                <details>
-                    <summary>{{ i.question }}</summary>
-                    <p>{{ i.answer }}</p>
-                    <p><small>Добавлено: {{ i.date_question }}</small></p>
+            <article class="faq-item">
+                <details class="faq-details">
+                    <summary class="faq-question">{{ i.question }}</summary>
+                    <p class="faq-answer">{{ i.answer }}</p>
+                    <p class="faq-date"><small>Добавлено: {{ i.date_question }}</small></p>
                 </details>
             </article>
         {% endfor %}

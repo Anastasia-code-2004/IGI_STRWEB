@@ -1,30 +1,25 @@
 {% extends "base.html" %}
-{% block title %}Фильмы{% endblock title %}
-{% block header %}Фильмы и их продажи{% endblock header %}
+
+{% block title %}Продажи фильмов{% endblock title %}
 {% block content %}
-    <main>
-    <section>
-        <table bgcolor="#deb887" border="1" align="center">
+    <table id="stats">
+        <caption>Продажи фильмов</caption>
+        <tr>
+            <th>Фильм</th>
+            <th>Общая сумма продаж</th>
+        </tr>
+        {% for movie_title, total_sales in movies_and_sales %}
             <tr>
-                <td colspan="2" align="center">Хиты кинопроката</td>
+                <td class="short-description">{{ movie_title }}</td>
+                <td class="short-description">{{ total_sales }}</td>
             </tr>
-            <tr>
-                <th id="movie">Фильм</th>
-                <th id="sales">Общая сумма продаж</th>
-            </tr>
-            {% for movie, total_sales in movies_and_sales %}
-            <tr>
-                <td headers="movie">{{ movie.title }}</td>
-                <td headers="sales">{{ total_sales }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </section>
-    <section>
-        <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <img src="{{ image_path }}" alt="Graphic of sales distribution">
-            <figcaption>График распределения продаж по фильмам</figcaption>
-        </figure>
-    </section>
-    </main>
+        {% endfor %}
+        <tr>
+            <th><strong>Итого:</strong></th>
+            <th><strong>{{ total_sales_amount }}</strong></th> <!-- Отображаем итоговую сумму -->
+        </tr>
+    </table>
+    <div class="image-container">
+        <img src="{{ image_path }}" alt="График распределения продаж">
+    </div>
 {% endblock content %}

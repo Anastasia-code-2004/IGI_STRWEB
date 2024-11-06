@@ -1,72 +1,62 @@
 {% extends "base.html" %}
-{% block title %}Главная{% endblock title %}
-{% block header %}Главная{% endblock header %}
+{% block title %}Синема Миракл{% endblock title %}
 {% block content %}
-    <main>
-        <header>
-            <h1>Добро пожаловать,
-                {% if user.is_superuser %}
-                    {{ user.username }}, вы вошли как суперпользователь
-                {% elif user.employee %}
-                    {{ user.username }}, вы вошли как сотрудник
-                {% else %}
-                    {{ user.username|default:'дорогой зритель' }}
-                {% endif %}
-            </h1>
-        </header>
-        <img
-            src="/media/logo_small.png"
-            srcset="/media/logo_small.png 200w,
-                    /media/logo_medium.png 400w,
-                    /media/logo_large.png 800w"
-            sizes="(max-width: 40em) 100vw, 50vw"
-            alt="Логотип Синема Миракл"
-            style="display: block; margin: 0 auto;">
-        <section class="content">
-            <h2>Последняя новость</h2>
-            <article>
-                <h3>{{ latest_news.title }}</h3>
-                <img src="{{ latest_news.image.url }}" alt="" style="height:300px;">
-                <p>{{ latest_news.content|truncatewords:20 }}</p>
-                <button name="Read more" type="button"
-                        onclick="location.href='{% url 'news_details' latest_news.id %}'"
-                        style="text-align: center">Читать далее</button>
+<main class="home">
+    <img 
+        src="/media/logo.jpeg"
+        alt="Логотип Синема Миракл"
+        class="logo-element">
+
+    <section class="content">
+        <div class="news-section">
+            <h2 class="section-title">Последняя новость</h2>
+            <article class="latest-news">
+                <div class="news-card">
+                    <img src="{{ latest_news.image.url }}" alt="{{ latest_news.title }}" class="news-image-home">
+                    <div class="news-overlay">
+                        <div class="news-text">
+                            <h3 class="news-headline">{{ latest_news.title }}</h3>
+                            <p class="news-content-home">{{ latest_news.content|truncatewords:20 }}</p>
+                            <button name="Read more" type="button" 
+                                    onclick="location.href='{% url 'news_details' latest_news.id %}'"
+                                    class="btn-read-more">Читать далее</button>
+                        </div>
+                    </div>
+                </div>
             </article>
+        </div>
+
+        
+        <section class="partners-section">
+            <h2 class="section-title">Наши партнеры</h2>
+            <div class="partners-list">
+                {% for partner in partners %}
+                    <figure>
+                        <a href="{{ partner.link }}" target="_blank">
+                            <img src="{{ partner.logo.url }}" alt="{{ partner.name }}" class="partner-logo"></a>
+                        <figcaption>{{ partner.name }}</figcaption>
+                    </figure>
+                {% endfor %}
+            </div>
         </section>
-    
-        <section>
-            <h2>Наши партнеры</h2>
-            {% for partner in partners %}
-                <figure>
-                <a href="{{ partner.link }}" target="_blank">
-                    <img src="{{ partner.logo.url }}" alt="{{ partner.name }}" style="height:100px;"></a>
-                    <figcaption>{{ partner.name }}</figcaption>
-                </figure>
-            {% endfor %}
-        </section>
-        <section>
-            <h2>Реклама</h2>
-            <table>
-                <tr>
-                    <td>
-                        <img src="/media/ads/ad_drinks.png" alt="Реклама" style="height: 350px">
-                    </td>
-                    <td>
-                        <img src="/media/ads/ad_tickets.png" alt="Реклама" style="height: 350px">
-                    </td>
-                    <td>
-                        <img src="/media/ads/ad_hall.png" alt="Реклама" style="height: 350px">
-                    </td>
-                </tr>
-            </table>
+
+        <section class="ads-section">
+            <h2 class="section-title">Реклама</h2>
+            <div class="ads-container">
+                <img src="/media/ads/ad_drinks.png" alt="Реклама">
+                <img src="/media/ads/ad_tickets.png" alt="Реклама">
+                <img src="/media/ads/ad_hall.png" alt="Реклама">
+            </div>
         </section>
         
         <hr>
-        <section class="content">
+
+        <section class="quote-section">
             {% if quote %}
-                <h2>Цитата:</h2>
+                <h2 class="quote">Цитата дня:</h2>
                 <blockquote cite="https://favqs.com/api/qotd">{{ quote }}</blockquote>
             {% endif %}
         </section>
-    </main>
+    </section>
+</main>
 {% endblock content %}

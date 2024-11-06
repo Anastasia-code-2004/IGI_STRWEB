@@ -20,6 +20,31 @@
                     <button type="submit">Корзина</button>
                 </form>
             {% endif %}
+
+            <!-- Форма фильтрации под кнопками -->
+            <form method="get" class="filter-form">
+                <div class="select-group">
+                    <select name="movie" onchange="this.form.submit()">
+                        <option value="">Фильм</option>
+                        {% for movie in movies %}
+                            <option value="{{ movie.title }}" 
+                                    {% if movie.title == request.GET.movie %}selected{% endif %}>
+                                {{ movie.title }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <select name="showtime" onchange="this.form.submit()">
+                        <option value="">Сеанс</option>
+                        {% for showtime in showtimes %}
+                            <option value="{{ showtime.id }}" 
+                                    {% if showtime.id == request.GET.showtime %}selected{% endif %}>
+                                {{ showtime.start_time }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <input type="date" name="date" value="{{ request.GET.date }}" onchange="this.form.submit()">
+                </div>
+            </form>
         {% else %}
             <form action="{% url 'signup' %}" method="get">
                 <button type="submit">Регистрация</button>
